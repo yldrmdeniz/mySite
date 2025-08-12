@@ -1,0 +1,85 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block content %}
+<h2>Tasks</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add Task</button>
+</form>
+
+<div id="tmt">
+    <h3>Two Minute Tasks</h3>
+    <ul>
+        {% for task in tmt_tasks %}
+            <li data-task="{{ task.id }}">{{ task.description }}
+                <button class="start-timer">Start</button>
+                <span class="timer"></span>
+            </li>
+        {% empty %}
+            <li>No two-minute tasks.</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div id="matrix" class="matrix">
+    <div class="row">
+        <div class="col" data-category="do">
+            <h3>Do</h3>
+            <ul class="task-list">
+                {% for task in do_tasks %}
+                    <li draggable="true" data-task="{{ task.id }}">{{ task.description }}
+                        <a href="{% url 'tasks:edit_task' task.pk %}">Edit</a>
+                        <a href="{% url 'tasks:delete_task' task.pk %}">Delete</a>
+                    </li>
+                {% empty %}
+                    <li>No tasks</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col" data-category="plan">
+            <h3>Plan</h3>
+            <ul class="task-list">
+                {% for task in plan_tasks %}
+                    <li draggable="true" data-task="{{ task.id }}">{{ task.description }}
+                        <a href="{% url 'tasks:edit_task' task.pk %}">Edit</a>
+                        <a href="{% url 'tasks:delete_task' task.pk %}">Delete</a>
+                    </li>
+                {% empty %}
+                    <li>No tasks</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col" data-category="delegate">
+            <h3>Delegate</h3>
+            <ul class="task-list">
+                {% for task in delegate_tasks %}
+                    <li draggable="true" data-task="{{ task.id }}">{{ task.description }}
+                        <a href="{% url 'tasks:edit_task' task.pk %}">Edit</a>
+                        <a href="{% url 'tasks:delete_task' task.pk %}">Delete</a>
+                    </li>
+                {% empty %}
+                    <li>No tasks</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col" data-category="forget">
+            <h3>Forget</h3>
+            <ul class="task-list">
+                {% for task in forget_tasks %}
+                    <li draggable="true" data-task="{{ task.id }}">{{ task.description }}
+                        <a href="{% url 'tasks:edit_task' task.pk %}">Edit</a>
+                        <a href="{% url 'tasks:delete_task' task.pk %}">Delete</a>
+                    </li>
+                {% empty %}
+                    <li>No tasks</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'tasks/tasks.js' %}"></script>
+{% endblock %}
